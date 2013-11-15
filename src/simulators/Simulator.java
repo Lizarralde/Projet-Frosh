@@ -188,7 +188,11 @@ public class Simulator {
             days++;
         }
     }
-    
+    /**
+     * Tells if the given coordinates are a valid coordinates within the grid.
+     * @param point : the coordinates to test
+     * @return true if the given coordinates are valid, false otherwise
+     */
 	private boolean isValid(Point point) {
 		// Check if a given point has valid coordinates (inside the grid)
 
@@ -199,7 +203,11 @@ public class Simulator {
 
 	} // isValid()
 
-    
+    /**
+     * get a list of all the coordinates considered in the neighborhood of a given coordinates
+     * @param point : the coordinates we want to get the neighborhood
+     * @return a List<Point> representing the neighborhood
+     */
     public List<Point> getNeighborhood(Point point) {
 		// get the neighborhood of a given point in the grid
 
@@ -235,24 +243,41 @@ public class Simulator {
 
 	} // getNeighborhood()
     
-	public void move(Point orig, Point dest) {
+	
+    /**
+     * Attempt to move a subject to a specific location, fails if the cell
+     * where we want the subject to move is occupied already.
+     * 
+     * @param orig : the coordinates of the subject to move
+     * @param dest : the coordinates where we want the subject to move
+     * @return true if the move was successful, false otherwise
+     */
+    public boolean move(Point orig, Point dest) {
 
 		// Avoid to move where someone already is
 
 		if (grid[dest.y][dest.x] != null)
-			return;
+			return false;
 
 		grid[dest.y][dest.x] = grid[orig.y][orig.x];
-
 		grid[orig.y][orig.x] = null;
+		
+		return true;
 
 	} // move()
 	
-	public void randomMove(Point orig) {
+    /**
+     * Try to move a subject to a random location within it's neighborhood.
+     * The subject will not move if he wants to go where someone already is.
+     * 
+     * @param orig : the coordinates of the subject we want to randomly move
+     * @return true if the subject moved, false otherwise
+     */
+	public boolean randomMove(Point orig) {
 
 		List<Point> neighborhood = getNeighborhood(orig);
 
-		move(orig, neighborhood.get((int) (Math.random() * neighborhood.size())));
+		return move(orig, neighborhood.get((int) (Math.random() * neighborhood.size())));
 
 	} // radomMove()
 
