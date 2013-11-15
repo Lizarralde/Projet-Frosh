@@ -1,8 +1,7 @@
 /**
- * 
- * Test if the config file is well initialized
- * 
  * @author Julien Le Van Suu
+ * Test si le fichier de config est bien initialisé avec certaines valeurs
+ * 
  */
 
 package config.junit;

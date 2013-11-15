@@ -108,4 +108,12 @@ public abstract class Config {
 
         return property.getProperty(s);
     }
+    
+    public static void setProperty(Properties p) {
+    	
+    	if (property == null) {
+
+    		property = p;
+    	}
+    }
 }

@@ -1,6 +1,6 @@
 #Tue Nov 12 19:42:03 CET 2013
-H5N1.Infection.Duck.Human=33
-H1N1.Infection.Pig.Human=80
+H5N1.Infection.Duck.Human=100
+H1N1.Infection.Pig.Human=100
 Pig.Incubation.Sick=2
 Grid.Width=6
 Ratio.Duck=10
@@ -16,12 +16,12 @@ Chicken.Incubation.Contagious=2
 Chicken.Incubation.Recovering=3
 H5N1.Infection.Chicken.Chicken=33
 Ratio.Chicken=15
-H5N1.Mortality.Human=33
+H5N1.Mortality.Human=0
 H1N1.Infection.Pig.Pig=33
 Duck.Incubation.Sick=3
 Pig.Incubation.Recovering=3
 Human.Incubation.Sick=2
-H5N1.Infection.Chicken.Duck=33
+H5N1.Infection.Chicken.Duck=0
 H5N1.Infection.Chicken.Human=33
 Human.Incubation.Contagious=3
 H1N1.Infection.Human.Human=33
