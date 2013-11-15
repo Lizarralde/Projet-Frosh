@@ -1,6 +1,7 @@
 /* Ne pas faire de tests ici */
 package simulators;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -187,6 +188,74 @@ public class Simulator {
             days++;
         }
     }
+    
+	private boolean isValid(Point point) {
+		// Check if a given point has valid coordinates (inside the grid)
+
+		if (point.x < 0 || point.y < 0 || point.y >= grid.length || point.x >= grid[0].length)
+			return false;
+
+		return true;
+
+	} // isValid()
+
+    
+    public List<Point> getNeighborhood(Point point) {
+		// get the neighborhood of a given point in the grid
+
+		List<Point> neighborhood = new ArrayList<Point>();
+
+		// checking cells left from point
+
+		for (int offY = -1; offY <= 1; ++offY) {
+			Point neighbor = new Point(point.x - 1, point.y + offY);
+			if (isValid(neighbor))
+				neighborhood.add(neighbor);
+		}
+
+		// checking cells right from point
+
+		for (int offY = -1; offY <= 1; ++offY) {
+			Point neighbor = new Point(point.x + 1, point.y + offY);
+			if (isValid(neighbor))
+				neighborhood.add(neighbor);
+		}
+
+		// checking cells up and down
+
+		Point neighborUp = new Point(point.x, point.y + 1);
+		Point neighborDown = new Point(point.x, point.y - 1);
+
+		if (isValid(neighborUp))
+			neighborhood.add(neighborUp);
+		if (isValid(neighborDown))
+			neighborhood.add(neighborDown);
+
+		return neighborhood;
+
+	} // getNeighborhood()
+    
+	public void move(Point orig, Point dest) {
+
+		// Avoid to move where someone already is
+
+		if (grid[dest.y][dest.x] != null)
+			return;
+
+		grid[dest.y][dest.x] = grid[orig.y][orig.x];
+
+		grid[orig.y][orig.x] = null;
+
+	} // move()
+	
+	public void randomMove(Point orig) {
+
+		List<Point> neighborhood = getNeighborhood(orig);
+
+		move(orig, neighborhood.get((int) (Math.random() * neighborhood.size())));
+
+	} // radomMove()
+
 
     /**
      * Changes the state of the subject in the grid. Contagious subject infect
@@ -195,11 +264,13 @@ public class Simulator {
      */
     public void day() {
 
-        for (int i = 0; i < grid.length; i++) {
+        List <Subject> movedAlready = new ArrayList<Subject>();
+    	
+    	for (int i = 0; i < grid.length; i++) {
 
             for (int j = 0; j < grid[i].length; j++) {
 
-                if (grid[i][j] == null) {
+                if (grid[i][j] == null || movedAlready.contains(grid[i][j])) {
 
                     continue;
                 }
@@ -231,6 +302,8 @@ public class Simulator {
                         grid[i][j].contact(grid[i - 1][j]);
                     }
                 }
+                
+                randomMove (new Point (j, i));
             }
         }
     }
