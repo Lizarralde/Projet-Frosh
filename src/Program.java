@@ -16,7 +16,6 @@ public abstract class Program {
      * @param args
      */
     public static void main(String[] args) {
-
         // Creation of the config file
         Config.store();
 

@@ -4,6 +4,7 @@ package simulators;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -188,61 +189,67 @@ public class Simulator {
             days++;
         }
     }
+	
+	private int getAxis (int a, int mod) {
+		a%= mod;
+		if (a < 0)
+			a += mod;
+		
+		return a;
+		
+	} // getAxis()
+	
+	private Point getCoords (int x, int y) {
+		x = getAxis(x, grid[0].length);
+		y = getAxis(y, grid.length);
+		
+		return new Point (x, y);
+		
+	} // getCoords()
+
     /**
-     * Tells if the given coordinates are a valid coordinates within the grid.
-     * @param point : the coordinates to test
-     * @return true if the given coordinates are valid, false otherwise
-     */
-	private boolean isValid(Point point) {
-		// Check if a given point has valid coordinates (inside the grid)
-
-		if (point.x < 0 || point.y < 0 || point.y >= grid.length || point.x >= grid[0].length)
-			return false;
-
-		return true;
-
-	} // isValid()
-
-    /**
-     * get a list of all the coordinates considered in the neighborhood of a given coordinates
+     * Get a list of all the coordinates considered in the neighborhood of a given coordinates.
+     * A neighbor cell can be only one cell away on the same line, same column 	and on the same diagonals.
      * @param point : the coordinates we want to get the neighborhood
      * @return a List<Point> representing the neighborhood
      */
     public List<Point> getNeighborhood(Point point) {
-		// get the neighborhood of a given point in the grid
 
 		List<Point> neighborhood = new ArrayList<Point>();
 
-		// checking cells left from point
-
-		for (int offY = -1; offY <= 1; ++offY) {
-			Point neighbor = new Point(point.x - 1, point.y + offY);
-			if (isValid(neighbor))
-				neighborhood.add(neighbor);
-		}
-
-		// checking cells right from point
-
-		for (int offY = -1; offY <= 1; ++offY) {
-			Point neighbor = new Point(point.x + 1, point.y + offY);
-			if (isValid(neighbor))
-				neighborhood.add(neighbor);
-		}
-
-		// checking cells up and down
-
-		Point neighborUp = new Point(point.x, point.y + 1);
-		Point neighborDown = new Point(point.x, point.y - 1);
-
-		if (isValid(neighborUp))
-			neighborhood.add(neighborUp);
-		if (isValid(neighborDown))
-			neighborhood.add(neighborDown);
+		neighborhood.add(getCoords(point.x - 1, point.y - 1));
+		neighborhood.add(getCoords(point.x - 1, point.y    ));
+		neighborhood.add(getCoords(point.x - 1, point.y + 1));
+		
+		neighborhood.add(getCoords(point.x + 1, point.y - 1));
+		neighborhood.add(getCoords(point.x + 1, point.y    ));
+		neighborhood.add(getCoords(point.x + 1, point.y + 1));
+		
+		neighborhood.add(getCoords(point.x, point.y + 1));
+		neighborhood.add(getCoords(point.x, point.y - 1));
 
 		return neighborhood;
 
 	} // getNeighborhood()
     
+    /**
+     * get a all the living neighbors of the given coordinates
+     * @param point : the coordinates we need to get the living neighbors.
+     * @return a List of Points, each Point giving the coordinates of a living neighbor
+     */
+    public List<Point> getNeighbors(Point point) {
+		List<Point> neighbors = getNeighborhood(point);
+
+		for (Iterator<Point> it = neighbors.iterator(); it.hasNext();) {
+			Point neighbor = (Point) it.next();
+
+			if (grid[neighbor.y][neighbor.x] == null)
+				it.remove();
+		}
+		
+		return neighbors;
+		
+    } // getNeighbors()
 	
     /**
      * Attempt to move a subject to a specific location, fails if the cell
@@ -305,33 +312,21 @@ public class Simulator {
 
                 // The subject is contagious
                 if (grid[i][j].isContagious()) {
-
-                    // Cross pattern
-                    if (j != 0) {
-
-                        grid[i][j].contact(grid[i][j - 1]);
-                    }
-
-                    if (i != grid.length - 1) {
-
-                        grid[i][j].contact(grid[i + 1][j]);
-                    }
-
-                    if (j != grid[i].length - 1) {
-
-                        grid[i][j].contact(grid[i][j + 1]);
-                    }
-
-                    if (i != 0) {
-
-                        grid[i][j].contact(grid[i - 1][j]);
-                    }
+                	
+            		List <Point> neighbors = getNeighbors(new Point (j, i));
+                	for (Iterator<Point> it = neighbors.iterator(); it.hasNext(); ) {
+            			Point neighbor = (Point) it.next();
+            			
+            			grid[i][j].contact(grid[neighbor.y][neighbor.x]);
+                	}
                 }
-                
                 randomMove (new Point (j, i));
+                movedAlready.add(grid[i][j]);
+                
             }
         }
-    }
+            
+    } // day()
 
     /**
      * Infected subject incubate. If nobody is infected then the simulation
