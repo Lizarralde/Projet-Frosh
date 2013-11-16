@@ -77,4 +77,17 @@ public class TestState {
 
 	}
 	
+	@Test
+	public void testToString()
+	{
+		State si = new Sick();
+		assertEquals(si.toString(), "S");
+		State h = new Healthy();
+		assertEquals(h.toString(), "H");
+		State c = new Contagious();
+		assertEquals(c.toString(), "C");
+		State r = new Recovering();
+		assertEquals(r.toString(), "R");
+	}
+	
 }
