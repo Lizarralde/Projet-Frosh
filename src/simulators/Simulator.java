@@ -48,6 +48,21 @@ public class Simulator {
         // Infects a number of subject
         infect();
     }
+    
+    public void setGrid (Subject grid[][]) {
+    	this.grid = grid;
+    	
+    } // setGrid()
+    
+    public Subject[][] getGrid () {
+    	return grid;
+    	
+    } // getGrid()
+    
+    public Subject getSubject (int x, int y) {
+    	return grid[y][x];
+    	
+    } // getSubject()
 
     /**
      * Generates a random grid.
@@ -190,6 +205,12 @@ public class Simulator {
         }
     }
 	
+    /**
+     * 
+     * @param a : a number representing an axis like x or y
+     * @param mod : the axis length
+     * @return an integer representing the converted axis of the parameter a
+     */
 	private int getAxis (int a, int mod) {
 		a%= mod;
 		if (a < 0)
@@ -199,6 +220,12 @@ public class Simulator {
 		
 	} // getAxis()
 	
+	/**
+	 * 
+	 * @param x : the x part of the coordinates
+	 * @param y : the y part of the coordinates
+	 * @return the converted coordinates with the getAxis() function
+	 */
 	private Point getCoords (int x, int y) {
 		x = getAxis(x, grid[0].length);
 		y = getAxis(y, grid.length);
