@@ -49,16 +49,31 @@ public class Simulator {
         infect();
     }
     
+    /**
+     * Set the new Subject grid
+     * @param grid : the new grid
+     */
     public void setGrid (Subject grid[][]) {
     	this.grid = grid;
     	
     } // setGrid()
     
+    /**
+     * get the subject grid
+     * @return the simulator's Subject grid
+     * @author lecpie
+     */
     public Subject[][] getGrid () {
     	return grid;
     	
     } // getGrid()
     
+    /**
+     * get the subject located in the grid at the given coordinates
+     * @param x : the x part of the coordinates
+     * @param y : the y part of the coordinates
+     * @return the subject in the x and y coordinates in the grid
+     */
     public Subject getSubject (int x, int y) {
     	return grid[y][x];
     	
@@ -210,9 +225,11 @@ public class Simulator {
      * @param a : a number representing an axis like x or y
      * @param mod : the axis length
      * @return an integer representing the converted axis of the parameter a
+     * 
+     * @author lecpie
      */
 	private int getAxis (int a, int mod) {
-		a%= mod;
+		a %= mod;
 		if (a < 0)
 			a += mod;
 		
@@ -225,6 +242,8 @@ public class Simulator {
 	 * @param x : the x part of the coordinates
 	 * @param y : the y part of the coordinates
 	 * @return the converted coordinates with the getAxis() function
+	 * 
+	 * @author lecpie
 	 */
 	private Point getCoords (int x, int y) {
 		x = getAxis(x, grid[0].length);
@@ -239,6 +258,8 @@ public class Simulator {
      * A neighbor cell can be only one cell away on the same line, same column 	and on the same diagonals.
      * @param point : the coordinates we want to get the neighborhood
      * @return a List<Point> representing the neighborhood
+     * 
+     * @author lecpie
      */
     public List<Point> getNeighborhood(Point point) {
 
@@ -263,6 +284,8 @@ public class Simulator {
      * get a all the living neighbors of the given coordinates
      * @param point : the coordinates we need to get the living neighbors.
      * @return a List of Points, each Point giving the coordinates of a living neighbor
+     * 
+     * @author lecpie
      */
     public List<Point> getNeighbors(Point point) {
 		List<Point> neighbors = getNeighborhood(point);
@@ -281,6 +304,8 @@ public class Simulator {
     /**
      * Attempt to move a subject to a specific location, fails if the cell
      * where we want the subject to move is occupied already.
+     * 
+     * @author lecpie
      * 
      * @param orig : the coordinates of the subject to move
      * @param dest : the coordinates where we want the subject to move
@@ -319,7 +344,7 @@ public class Simulator {
     /**
      * Changes the state of the subject in the grid. Contagious subject infect
      * their neighbor.
-     * 
+     * @author Dorian LIZARRALDE, lecpie
      */
     public void day() {
 

@@ -14,6 +14,11 @@ import states.Sick;
 import subjects.Subject;
 import subjects.Type;
 
+/**
+ * 
+ * @author lecpie
+ *
+ */
 public class TestSimulator {
 	
 	Simulator simulator;
