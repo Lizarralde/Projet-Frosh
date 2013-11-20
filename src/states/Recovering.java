@@ -21,7 +21,7 @@ public class Recovering extends State {
 
         // The subject incubates enough days to become Healthy
         if (s.getIncubationTime() >= Integer.parseInt(Config.getProperty(s
-                .getType().toString().concat(".Incubation.Recovering")))) {
+                .toString().concat(".Incubation.Recovering")))) {
 
             // The subject gets his incubation time reset
             s.setIncubationTime(0);

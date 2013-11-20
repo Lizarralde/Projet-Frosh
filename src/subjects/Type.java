@@ -8,7 +8,8 @@ package subjects;
  */
 public enum Type {
 
-    HUMAN("Human"), CHICKEN("Chicken"), DUCK("Duck"), PIG("Pig");
+    HUMAN(Human.class.getName()), CHICKEN(Chicken.class.getName()), DUCK(
+            Duck.class.getName()), PIG(Pig.class.getName());
 
     /**
      * Defines the name of the type.

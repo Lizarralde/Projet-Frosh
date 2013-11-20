@@ -20,7 +20,7 @@ public class Sick extends State {
 
         // The subject incubates enough days to become contagious
         if (s.getIncubationTime() >= Integer.parseInt(Config.getProperty(s
-                .getType().toString().concat(".Incubation.Sick")))) {
+                .toString().concat(".Incubation.Sick")))) {
 
             // The subject gets his incubation time reset
             s.setIncubationTime(0);

@@ -30,25 +30,25 @@ public class Contagious extends State {
 
         // The subject incubates enough days to become recovering or dead
         if (s.getIncubationTime() >= Integer.parseInt(Config.getProperty(s
-                .getType().toString().concat(".Incubation.Contagious")))) {
+                .toString().concat(".Incubation.Contagious")))) {
 
             // The subject gets his incubation time reset
             s.setIncubationTime(0);
 
             // The subject can die of the disease
             if (Config.getProperty(s.getDisease().toString()
-                    .concat(".Mortality." + s.getType())) != null) {
+                    .concat(".Mortality." + s.toString())) != null) {
 
                 // The subject dies
                 if ((int) (100.0 * Math.random()) + 1 <= Integer
                         .parseInt(Config.getProperty(s.getDisease().toString()
-                                .concat(".Mortality." + s.getType())))) {
+                                .concat(".Mortality." + s.toString())))) {
 
                     // The subject becomes dead
                     s.setState(new Dead());
 
                     return;
-                } 
+                }
             }
 
             // The subject becomes recovering

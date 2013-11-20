@@ -1,5 +1,3 @@
-import config.Config;
-
 import simulators.Simulator;
 
 /**
@@ -17,7 +15,7 @@ public abstract class Program {
      */
     public static void main(String[] args) {
         // Creation of the config file
-        Config.store();
+        // Config.store();
 
         // Simulator
         Simulator s = new Simulator();

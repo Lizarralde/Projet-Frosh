@@ -9,10 +9,9 @@ import org.junit.Test;
 import subjects.Type;
 
 public class TestType {
-	@Test
-	public void testToString()
-	{
-		Type t = Type.CHICKEN;
-		assertEquals(t.toString(), "Chicken");
-	}
+    @Test
+    public void testToString() {
+        Type t = Type.CHICKEN;
+        assertEquals(t.toString(), "subjects.Chicken");
+    }
 }

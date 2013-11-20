@@ -15,12 +15,6 @@ import states.State;
 public class Subject {
 
     /**
-     * Defines the type of the subject.
-     * 
-     */
-    private Type type;
-
-    /**
      * Defines the state of the subject.
      * 
      */
@@ -43,23 +37,10 @@ public class Subject {
      * 
      * @param s
      */
-    public Subject(Type t) {
-
-        // The subject gets his type
-        type = t;
+    public Subject() {
 
         // The subject starts Healthy
         state = new Healthy();
-    }
-
-    /**
-     * Returns the value of type.
-     * 
-     * @return
-     */
-    public Type getType() {
-
-        return type;
     }
 
     /**
@@ -188,14 +169,13 @@ public class Subject {
 
             // The neighbor can be infected
             if (Config.getProperty(disease.toString().concat(".Infection.")
-                    .concat(type.toString()).concat(".")
-                    .concat(s.getType().toString())) != null) {
+                    .concat(toString()).concat(".").concat(s.toString())) != null) {
 
                 // The neighbor gets infected
                 if ((int) (100.0 * Math.random()) + 1 <= Integer
                         .parseInt(Config.getProperty(disease.toString()
-                                .concat(".Infection.").concat(type.toString())
-                                .concat(".").concat(s.getType().toString())))) {
+                                .concat(".Infection.").concat(toString())
+                                .concat(".").concat(s.toString())))) {
 
                     // The neighbor gets the disease of the subject
                     s.setDisease(disease);
@@ -205,14 +185,5 @@ public class Subject {
                 }
             }
         }
-    }
-
-    /**
-     * @see Object#toString()
-     * 
-     */
-    public String toString() {
-
-        return type.toString().substring(0, 2).concat(state.toString());
     }
 }
