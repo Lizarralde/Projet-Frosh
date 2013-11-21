@@ -1,9 +1,10 @@
 package diseases;
 
 /**
- * @author Dorian
+ * Modelize a Disease
+ * @author Dorian LIZARRALDE
  * 
  */
-public interface Disease {
+public class Disease {
 
 }

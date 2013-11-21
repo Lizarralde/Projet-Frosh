@@ -1,7 +1,8 @@
 package subjects;
 
 /**
- * @author Dorian
+ * Modelize a Human
+ * @author Dorian LIZARRALDE
  * 
  */
 public class Human extends Subject {

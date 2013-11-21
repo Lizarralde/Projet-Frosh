@@ -1,7 +1,7 @@
 package subjects;
 
 /**
- * Type is an enumeration representing the type of a subject.
+ * Type is an enumeration representing the class of an element.
  * 
  * @author Dorian LIZARRALDE
  * 

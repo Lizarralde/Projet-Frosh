@@ -1,7 +1,8 @@
 package subjects;
 
 /**
- * @author Dorian
+ * Modelize a Pig
+ * @author Dorian LIZARRALDE
  * 
  */
 public class Pig extends Subject {

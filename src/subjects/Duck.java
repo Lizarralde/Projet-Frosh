@@ -1,7 +1,8 @@
 package subjects;
 
 /**
- * @author Dorian
+ * Modelize a Duck
+ * @author Dorian LIZARRALDE
  * 
  */
 public class Duck extends Subject {

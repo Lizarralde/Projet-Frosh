@@ -1,10 +1,11 @@
 package diseases;
 
 /**
- * @author Dorian
+ * Modelize H1N1 Disease
+ * @author Dorian LIZARRALDE
  * 
  */
-public class H1N1 implements Disease {
+public class H1N1 extends Disease {
 
     /**
      * @see Object#toString()
