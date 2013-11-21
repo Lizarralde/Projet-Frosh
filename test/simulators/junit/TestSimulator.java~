@@ -19,7 +19,7 @@ import subjects.Subject;
 
 /**
  * 
- * @author lecpie, le van suu
+ * @author lecpie, levansuu
  * 
  */
 public class TestSimulator {
@@ -54,73 +54,7 @@ public class TestSimulator {
         simulator.setGrid(grid);
 
     } // setup()
-	
-	/*
-	@author Julien Le Van Suu
-	@Test
-	public void TestRun()
-	{
-		Simulator s = new Simulator();
-		assertTrue(s.endOfSimulation);
-	}
-	
-	@author Julien Le Van Suu
-	@Test
-	public void getAxis()
-	{
-		Simulator s = new Simulator();
-		
-		assertEquals(s.getAxis(8, 5),3);
-	}
-	
-	@author Julien Le Van Suu
-	@Test
-	public void TestGetCoords()
-	{
-		Simulator s = new Simulator();
-		assertEquals(s.getCoords(3, 4), new Point(3,4)); 
-	}
-	*/
-	
-	/* @author Julien Le Van Suu */
-	@Test
-	public void testGetNeighborhood()
-	{
-		Simulator s = new Simulator();
-		java.util.List<Point> liste=s.getNeighborhood(new Point(3,4));
-		assertTrue(liste.contains(new Point(2,3)));
-		assertTrue(liste.contains(new Point(2,4)));
-		assertTrue(liste.contains(new Point(2,5)));
-		
-		assertTrue(liste.contains(new Point(3,5)));
-		assertTrue(liste.contains(new Point(3,3)));
-		assertTrue(liste.contains(new Point(4,3)));
-		assertTrue(liste.contains(new Point(4,4)));
-		assertTrue(liste.contains(new Point(4,5)));
-	}
-	
-	/*
-	@author Julien Le Van Suu 
-	@Test
-	public void testMove()
-	{
-		
-		Simulator s = new Simulator();
-		Subject a = s.grid[2][3];
-		s.move(new Point(2,3),new Point(3,3));
-		assertGrid(s.grid[3][3] == a);
-	}
-	*/
 
-	/* @author Julien Le Van Suu */
-	@Test
-	public void testLineSeparator()
-	{
-		Simulator s = new Simulator();
-		assertEquals(s.lineSeparator(),"+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+".concat(System.getProperty("line.separator")));
-	}
-
-	
     @Test
     public void testMovePossible() {
         Subject s1 = simulator.getSubject(0, 0);
@@ -160,7 +94,5 @@ public class TestSimulator {
                 s2, simulator.getSubject(1, 0));
 
     } // testMoveNotPossible()
-
-
 
 } // class TestSimulator
