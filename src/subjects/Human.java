@@ -2,6 +2,7 @@ package subjects;
 
 /**
  * Modelize a Human
+ * 
  * @author Dorian LIZARRALDE
  * 
  */

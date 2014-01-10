@@ -2,6 +2,7 @@ package subjects;
 
 /**
  * Modelize a Duck
+ * 
  * @author Dorian LIZARRALDE
  * 
  */

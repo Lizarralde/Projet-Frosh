@@ -2,6 +2,7 @@ package subjects;
 
 /**
  * Modelize a Pig
+ * 
  * @author Dorian LIZARRALDE
  * 
  */

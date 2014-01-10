@@ -2,6 +2,7 @@ package subjects;
 
 /**
  * Modelize a Chicken
+ * 
  * @author Dorian LIZARRALDE
  * 
  */

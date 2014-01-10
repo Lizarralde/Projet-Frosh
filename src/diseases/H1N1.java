@@ -2,6 +2,7 @@ package diseases;
 
 /**
  * Modelize H1N1 Disease
+ * 
  * @author Dorian LIZARRALDE
  * 
  */

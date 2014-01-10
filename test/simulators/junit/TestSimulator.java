@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import diseases.H1N1;
 import diseases.H5N1;
+import foxAndRabbit.Field;
 import simulators.Simulator;
 import states.Contagious;
 import states.Sick;
@@ -39,17 +40,17 @@ public class TestSimulator {
          * +-----+-----+-----+
          */
 
-        Subject grid[][] = new Subject[2][3];
+        Field grid = new Field(2, 3);
 
-        grid[0][0] = new Human();
-        grid[0][1] = new Pig();
-        grid[1][1] = new Duck();
+        grid.place(new Human(), 0, 0);
+        grid.place(new Pig(), 0, 1);;
+        grid.place(new Duck(), 1, 1);;
 
-        grid[0][1].setDisease(new H1N1());
-        grid[1][1].setDisease(new H5N1());
+        ((Subject) grid.getObjectAt(0, 1)).setDisease(new H1N1());
+        ((Subject) grid.getObjectAt(1, 1)).setDisease(new H5N1());
 
-        grid[0][1].setState(new Contagious());
-        grid[1][1].setState(new Sick());
+        ((Subject) grid.getObjectAt(0, 1)).setState(new Contagious());
+        ((Subject) grid.getObjectAt(1, 1)).setState(new Sick());
 
         simulator.setGrid(grid);
 
@@ -111,15 +112,6 @@ public class TestSimulator {
 		assertGrid(s.grid[3][3] == a);
 	}
 	*/
-
-	/* @author Julien Le Van Suu */
-	@Test
-	public void testLineSeparator()
-	{
-		Simulator s = new Simulator();
-		assertEquals(s.lineSeparator(),"+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+".concat(System.getProperty("line.separator")));
-	}
-
 	
     @Test
     public void testMovePossible() {

@@ -1,15 +1,24 @@
 package simulators;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 import config.Config;
 import diseases.H1N1;
 import diseases.H5N1;
+import foxAndRabbit.Field;
+import foxAndRabbit.GraphView;
+import foxAndRabbit.GridView;
+import foxAndRabbit.SimulatorView;
+import states.Dead;
+import subjects.Chicken;
+import subjects.Duck;
+import subjects.Human;
+import subjects.Pig;
 import subjects.Subject;
 import subjects.Type;
 
@@ -26,13 +35,15 @@ public class Simulator {
      * Defines the grid of Subject.
      * 
      */
-    private Subject[][] grid;
+    private Field grid;
 
     /**
      * Defines when the simulation stops.
      * 
      */
     private boolean endOfSimulation;
+
+    private List<SimulatorView> views;
 
     /**
      * Default constructor.
@@ -44,8 +55,38 @@ public class Simulator {
         // New random grid
         grid = randomGrid();
 
+        initViews();
+
         // Infects a number of subject
         infect();
+    }
+
+    /**
+     * @author Dorian LIZARRALDE
+     */
+    private void initViews() {
+
+        views = new ArrayList<SimulatorView>();
+
+        SimulatorView view = new GridView(grid.getDepth(), grid.getWidth());
+
+        view.setColor(Human.class, Color.BLUE);
+
+        view.setColor(Chicken.class, Color.GREEN);
+
+        view.setColor(Duck.class, Color.MAGENTA);
+
+        view.setColor(Pig.class, Color.ORANGE);
+
+        views.add(view);
+
+        SimulatorView graphe = new GraphView(500, 150, 500);
+
+        graphe.setColor(Human.class, Color.BLUE);
+
+        graphe.setColor(Chicken.class, Color.GREEN);
+
+        views.add(graphe);
     }
 
     /**
@@ -54,7 +95,7 @@ public class Simulator {
      * @param grid
      *            : the new grid
      */
-    public void setGrid(Subject grid[][]) {
+    public void setGrid(Field grid) {
         this.grid = grid;
 
     } // setGrid()
@@ -65,7 +106,7 @@ public class Simulator {
      * @return the simulator's Subject grid
      * @author lecpie
      */
-    public Subject[][] getGrid() {
+    public Field getGrid() {
         return grid;
 
     } // getGrid()
@@ -80,7 +121,7 @@ public class Simulator {
      * @return the subject in the x and y coordinates in the grid
      */
     public Subject getSubject(int x, int y) {
-        return grid[y][x];
+        return (Subject) grid.getObjectAt(y, x);
 
     } // getSubject()
 
@@ -89,16 +130,16 @@ public class Simulator {
      * 
      * @return
      */
-    private Subject[][] randomGrid() {
-
-        // Width of the grid
-        int width = Integer.parseInt(Config.getProperty("Grid.Width"));
+    private Field randomGrid() {
 
         // Length of the grid
         int length = Integer.parseInt(Config.getProperty("Grid.Length"));
 
+        // Width of the grid
+        int width = Integer.parseInt(Config.getProperty("Grid.Width"));
+
         // New grid
-        Subject[][] s = new Subject[width][length];
+        Field s = new Field(length, width);
 
         // List of subject
         List<Subject> l = new ArrayList<Subject>();
@@ -115,7 +156,7 @@ public class Simulator {
                     + str.substring(str.lastIndexOf("."))));
 
             // New subject add to the list
-            for (int i = 0; i < width * length * ratio / 100.; i++) {
+            for (int i = 0; i < length * width * ratio / 100.; i++) {
 
                 try {
 
@@ -131,7 +172,7 @@ public class Simulator {
         int size = l.size();
 
         // Fills the list with empty spaces
-        for (int i = 0; i < width * length - size; i++) {
+        for (int i = 0; i < length * width - size; i++) {
 
             l.add(null);
         }
@@ -144,7 +185,7 @@ public class Simulator {
 
             for (int j = 0; j < length; j++) {
 
-                s[i][j] = l.get(i * 10 + j);
+                s.place(l.get(j * width + i), j, i);
             }
         }
 
@@ -161,30 +202,30 @@ public class Simulator {
                 .getProperty("Grid.Infected")); i++) {
 
             // Position x
-            int x = (int) (grid.length * Math.random());
+            int x = (int) (grid.getWidth() * Math.random());
 
             // Position y
-            int y = (int) (grid[0].length * Math.random());
+            int y = (int) (grid.getDepth() * Math.random());
 
             // Infects the subject
-            if (grid[x][y] != null) {
+            if (getSubject(x, y) != null) {
 
-                switch (grid[x][y].toString()) {
+                switch (getSubject(x, y).toString()) {
 
                 // Human starts healthy
                 case "Human":
                     break;
 
                 case "Chicken":
-                    grid[x][y].setDisease(new H5N1());
+                    getSubject(x, y).setDisease(new H5N1());
                     break;
 
                 case "Duck":
-                    grid[x][y].setDisease(new H5N1());
+                    getSubject(x, y).setDisease(new H5N1());
                     break;
 
                 case "Pig":
-                    grid[x][y].setDisease(new H1N1());
+                    getSubject(x, y).setDisease(new H1N1());
                     break;
 
                 // Empty space
@@ -211,28 +252,41 @@ public class Simulator {
             // First step of the day
             day();
 
+            display(days);
+
             // Displays the grid
-            System.out.println(toString());
+            // System.out.println(toString());
 
             // Last step of the day
             night();
 
             // Displays current number of days
-            System.out.println("Actual Day : " + days);
+            // System.out.println("Actual Day : " + days);
 
             // Wait for continue or displays end of simulation
-            if (!endOfSimulation) {
-
-                System.out.println("Press any key to continue");
-
-                new Scanner(System.in).nextLine();
-            } else {
-
-                System.out.println("End of the Simulation");
-            }
+            /*
+             * if (!endOfSimulation) {
+             * 
+             * System.out.println("Press any key to continue");
+             * 
+             * new Scanner(System.in).nextLine(); } else {
+             * 
+             * System.out.println("End of the Simulation"); }
+             */
 
             // Increments number of days
             days++;
+        }
+    }
+
+    /**
+     * @author Dorian LIZARRALDE
+     */
+    private void display(int days) {
+
+        for (SimulatorView view : views) {
+
+            view.showStatus(days, grid);
         }
     }
 
@@ -266,8 +320,8 @@ public class Simulator {
      * @author lecpie
      */
     private Point getCoords(int x, int y) {
-        x = getAxis(x, grid[0].length);
-        y = getAxis(y, grid.length);
+        x = getAxis(x, grid.getWidth());
+        y = getAxis(y, grid.getDepth());
 
         return new Point(x, y);
 
@@ -319,7 +373,7 @@ public class Simulator {
         for (Iterator<Point> it = neighbors.iterator(); it.hasNext();) {
             Point neighbor = (Point) it.next();
 
-            if (grid[neighbor.y][neighbor.x] == null)
+            if (getSubject(neighbor.x, neighbor.y) == null)
                 it.remove();
         }
 
@@ -343,11 +397,11 @@ public class Simulator {
 
         // Avoid to move where someone already is
 
-        if (grid[dest.y][dest.x] != null)
+        if (getSubject(dest.x, dest.y) != null)
             return false;
 
-        grid[dest.y][dest.x] = grid[orig.y][orig.x];
-        grid[orig.y][orig.x] = null;
+        grid.place(getSubject(orig.x, orig.y), dest.y, dest.x);
+        grid.place(null, orig.y, orig.x);
 
         return true;
 
@@ -380,31 +434,33 @@ public class Simulator {
 
         List<Subject> movedAlready = new ArrayList<Subject>();
 
-        for (int i = 0; i < grid.length; i++) {
+        for (int i = 0; i < grid.getWidth(); i++) {
 
-            for (int j = 0; j < grid[i].length; j++) {
+            for (int j = 0; j < grid.getDepth(); j++) {
 
-                if (grid[i][j] == null || movedAlready.contains(grid[i][j])) {
+                if (getSubject(i, j) == null
+                        || movedAlready.contains(getSubject(i, j))) {
 
                     continue;
                 }
 
                 // Changes the state of the subject
-                grid[i][j].changeState();
+                getSubject(i, j).changeState();
 
                 // The subject is contagious
-                if (grid[i][j].isContagious()) {
+                if (getSubject(i, j).isContagious()) {
 
-                    List<Point> neighbors = getNeighbors(new Point(j, i));
+                    List<Point> neighbors = getNeighbors(new Point(i, j));
                     for (Iterator<Point> it = neighbors.iterator(); it
                             .hasNext();) {
                         Point neighbor = (Point) it.next();
 
-                        grid[i][j].contact(grid[neighbor.y][neighbor.x]);
+                        getSubject(i, j).contact(
+                                getSubject(neighbor.x, neighbor.y));
                     }
                 }
-                randomMove(new Point(j, i));
-                movedAlready.add(grid[i][j]);
+                randomMove(new Point(i, j));
+                movedAlready.add(getSubject(i, j));
 
             }
         }
@@ -421,23 +477,30 @@ public class Simulator {
         // End of simulation
         endOfSimulation = true;
 
-        for (int i = 0; i < grid.length; i++) {
+        for (int i = 0; i < grid.getWidth(); i++) {
 
-            for (int j = 0; j < grid[i].length; j++) {
+            for (int j = 0; j < grid.getDepth(); j++) {
 
-                if (grid[i][j] == null) {
+                if (getSubject(i, j) == null) {
+
+                    continue;
+                }
+
+                if (getSubject(i, j).getState() instanceof Dead) {
+
+                    grid.place(null, j, i);
 
                     continue;
                 }
 
                 // Someone is still infected
-                if (grid[i][j].isInfected()) {
+                if (getSubject(i, j).isInfected()) {
 
                     endOfSimulation = false;
                 }
 
                 // Incubation
-                grid[i][j].incubate();
+                getSubject(i, j).incubate();
             }
         }
     }
@@ -453,7 +516,7 @@ public class Simulator {
         String s = "";
 
         // Composition of "-" and "+" in function of the length of the grid
-        for (int k = 0; k < grid[0].length; k++) {
+        for (int k = 0; k < grid.getWidth(); k++) {
 
             s = s.concat("+-----");
         }
@@ -478,11 +541,11 @@ public class Simulator {
 
         Subject sub;
 
-        for (int i = 0; i < grid.length; i++) {
+        for (int j = 0; j < grid.getDepth(); j++) {
 
-            for (int j = 0; j < grid[i].length; j++) {
+            for (int i = 0; i < grid.getWidth(); i++) {
 
-                sub = grid[i][j];
+                sub = getSubject(i, j);
 
                 if (sub != null) {
 
